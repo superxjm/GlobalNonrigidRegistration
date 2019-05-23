@@ -12,6 +12,7 @@ Please cite this work if you make use of our system in any of your own endeavors
 # Windows - Visual Studio #
 * Windows 7/10 with Visual Studio 2015
 * [OpenCV >= 3.2] (https://opencv.org/)
+* [QT >= 5] (https://www.qt.io/)
 * [OpenGL]
 * [GLM]
 * [CUDA >= 8.0] (https://developer.nvidia.com/cuda-downloads)
