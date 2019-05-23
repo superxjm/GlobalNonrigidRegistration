@@ -22,7 +22,7 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 Note: The FLANN library should be modified as in KNearestPoint.h
 
-BaiduYun link for all libraries: https://pan.baidu.com/s/1eSCdcseHjDjJfH4Dy3EDaA 
+Link for a package containing all libraries: https://pan.baidu.com/s/1eSCdcseHjDjJfH4Dy3EDaA 
 
 Passward: ixub
 
