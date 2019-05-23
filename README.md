@@ -21,4 +21,4 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 Note: The FLANN library should be modified as in KNearestPoint.h
 
-[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](http://youtu.be/vt5fpE0bzSY)
+
