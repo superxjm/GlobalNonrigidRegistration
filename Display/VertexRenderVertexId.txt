@@ -1,0 +1,12 @@
+#version 400
+
+uniform mat4 u_MVPMatrix;
+attribute vec4 a_Position;
+//attribute int a_VertexId;
+flat out int v_VertexId;
+
+void main()
+{
+   v_VertexId = gl_VertexID;
+   gl_Position = u_MVPMatrix * a_Position;
+}

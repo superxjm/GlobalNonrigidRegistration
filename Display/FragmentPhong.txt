@@ -1,0 +1,29 @@
+#version 330
+uniform vec4 u_AmbientColor;
+uniform vec4 u_DiffuseColor;
+uniform vec4 u_SpecularColor;
+uniform float u_depthChange;
+smooth in vec3 v_VaryingNormal;
+varying vec3 v_VaryingLightDir;
+varying vec3 v_position;
+
+void main(void)
+{
+   vec4 FragColor;
+   float diff = max(0.0f, dot(v_VaryingNormal, v_VaryingLightDir));
+   FragColor = diff * u_DiffuseColor;
+   FragColor += u_AmbientColor;
+   
+   vec3 Reflection = normalize(reflect(-normalize(v_VaryingLightDir), normalize(v_VaryingNormal)));
+   float spec = max(0.0, dot(normalize(-v_position), Reflection));
+   if (diff!=0)
+   {
+      float fSpec = pow(spec, 128.0);
+	  FragColor.rgb += vec3(fSpec, fSpec, fSpec);
+   }
+   /*if(gl_FrontFacing) gl_FragColor = vec4(1.0f,1.0f,0.0f,1.0f);
+   else gl_FragColor = vec4(1.0f,0.0f,0.0f,1.0f);*/
+   //gl_FragColor = vec4(gl_FragCoord.z,gl_FragCoord.z,gl_FragCoord.z, 1.0f);
+   gl_FragDepth = gl_FragCoord.z + u_depthChange;
+   gl_FragColor = vec4(FragColor.xyz, 1.0);
+}

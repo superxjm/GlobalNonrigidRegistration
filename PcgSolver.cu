@@ -941,14 +941,18 @@ void PcgLinearSolver::solveCPUOpt(thrust::device_vector<float>& d_x,
                                   thrust::device_vector<float>& d_b, thrust::device_vector<float>& preconditioner,
                                   int max_iter)
 {
-	std::cout << "row1: " << m_row << std::endl;
+	//std::cout << "row1: " << m_row << std::endl;
 
 	//innoreal::InnoRealTimer timer;
 	//timer.TimeStart();
+
+	//for (int i = 0; i < m_row; i++) d_b[i] = 0.01;
+
 	float *p1, *p2, *p3;
 	checkCudaErrors(cudaMemcpy(r_vec.data(), RAW_PTR(d_b), m_row * sizeof(float), cudaMemcpyDeviceToHost));
 	checkCudaErrors(cudaMemcpy(precond_vec.data(), RAW_PTR(preconditioner), m_row * sizeof(float), cudaMemcpyDeviceToHost));
 	//timer.TimeEnd();
+
 
 	//timer.TimeStart();
 	p1 = p_vec.data(), p2 = precond_vec.data(), p3 = r_vec.data();
@@ -964,22 +968,27 @@ void PcgLinearSolver::solveCPUOpt(thrust::device_vector<float>& d_x,
 	spmv_wrapper.a = d_a;	
 	spmv_wrapper.res = d_omega;
 
+	//for (int i = 0; i < m_row; i++) delta_x_vec[i] = 0.01;
 	memset(delta_x_vec.data(), 0, m_row * sizeof(float));
 	//timer.TimeEnd();
 	//std::cout << "t2: " << timer.TimeGap_in_ms() << std::endl;
 	double r_val;
 	int iterCnt = 0;
 	//timer.TimeStart();
+	//innoreal::InnoRealTimer itertimer;
+	//float minitertime=100, maxitertime=0;
 	for (int k = 0; k < max_iter; k++)
 	{
+		//itertimer.TimeStart();
 		zr_dot_old = zr_dot;
 		//std::cout << "zr_dot" << zr_dot << std::endl;
 		checkCudaErrors(cudaMemcpy(d_p, p_vec.data(), m_row * sizeof(float), cudaMemcpyHostToDevice));
 
-		spmv_wrapper.x = d_p;
-		SparseMvKernel << <m_row, 64 >> > (spmv_wrapper);
-		checkCudaErrors(cudaDeviceSynchronize());
-#if 0
+
+		//spmv_wrapper.x = d_p;
+		//SparseMvKernel << <m_row, 64 >> > (spmv_wrapper);
+		//checkCudaErrors(cudaDeviceSynchronize());
+#if 1
 		cusparseScsrmv(m_cusparseHandle, CUSPARSE_OPERATION_NON_TRANSPOSE, m_row, m_row, num_nnz, &m_floatone, m_descr,
 			d_a, d_ia, d_ja, RAW_PTR(d_p), &m_floatzero, RAW_PTR(d_omega));
 #endif
@@ -1000,6 +1009,7 @@ void PcgLinearSolver::solveCPUOpt(thrust::device_vector<float>& d_x,
 		{
 			alpha += (*(p1++))*(*(p2++));
 		}
+		//printf("alpha: %f\n", alpha);
 		alpha = zr_dot / alpha;
 
 		p1 = delta_x_vec.data(), p2 = p_vec.data();
@@ -1021,6 +1031,7 @@ void PcgLinearSolver::solveCPUOpt(thrust::device_vector<float>& d_x,
 		//if (r_val < 1.0f)
 		if (r_val < 0.1f)
 			break;
+		//printf("r_val: %f\n", r_val);
 #endif
 
 		p1 = z_vec.data(), p2 = precond_vec.data(), p3 = r_vec.data();
@@ -1044,8 +1055,14 @@ void PcgLinearSolver::solveCPUOpt(thrust::device_vector<float>& d_x,
             ++p1;
 		}
 		++iterCnt;
+		//itertimer.TimeEnd();
+		//if (itertimer.TimeGap_in_ms() < minitertime) minitertime = itertimer.TimeGap_in_ms();
+		//if (itertimer.TimeGap_in_ms() > maxitertime) maxitertime = itertimer.TimeGap_in_ms();
+
+		//printf("each iter time: %f %f %f\n", itertimer.TimeGap_in_ms(), minitertime, maxitertime);
 	}
 	//timer.TimeEnd();
+	//printf("min max: %f %f\n", minitertime, maxitertime);
 	//std::cout << "t: " << timer.TimeGap_in_ms() << std::endl;
 	//printf("PCG iter count: %d\n", iterCnt);
 	checkCudaErrors(cudaMemcpy(RAW_PTR(d_x), delta_x_vec.data(), m_row * sizeof(float), cudaMemcpyHostToDevice));

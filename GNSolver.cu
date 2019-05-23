@@ -8,13 +8,13 @@
 #include <device_launch_parameters.h>
 #include <opencv2/opencv.hpp>
 #include "InputData.h"
-#include "InnorealTimer.hpp"
+#include "Helpers/InnorealTimer.hpp"
 #include "GeoConstraint.h"
 #include "PhotoConstraint.h"
 #include "SmoothConstraint.h"
 #include "RotConstraint.h"
 #include "PcgSolver.h"
-#include "UtilsMath.h"
+#include "Helpers/UtilsMath.h"
 
 __global__ void InitVarkernel(float* vars, int varNum)
 {
@@ -33,7 +33,8 @@ GNSolver::GNSolver(InputData* input_data, const SolverPara& para)
 	initCons(para);
 
 	m_dInitVarPatternVec.resize(NODE_NUM_EACH_FRAG * 12);
-	int block = NODE_NUM_EACH_FRAG * 12, grid = 1;
+	int block = 256;
+	int grid = DivUp(NODE_NUM_EACH_FRAG * 12, block);
 	InitVarkernel << < grid, block >> >(RAW_PTR(m_dInitVarPatternVec), NODE_NUM_EACH_FRAG * 12);
 	checkCudaErrors(cudaDeviceSynchronize());
 	checkCudaErrors(cudaGetLastError());
@@ -56,6 +57,16 @@ GNSolver::~GNSolver()
 	{
 		delete *it;
 	}
+
+	m_dInitVarPatternVec.clear();
+	m_dJTb.clear();
+	m_dPreconditioner.clear();
+	m_dVars.clear();
+	m_dRsTransInv.clear();
+	m_dDelta.clear();
+	m_dCameraToNodeWeightVec.clear();
+
+	if (m_pcgLinearSolver != nullptr) delete m_pcgLinearSolver;
 }
 
 bool GNSolver::initVars()
@@ -250,7 +261,7 @@ __global__ void ExtractPreconditioner(float* preCondTerms, int* ia, int* ja, flo
 	{
 		if (idx == ja[i])
 		{
-          a[i] += 0.001f;
+            //a[i] += 0.001f;
 			preCondTerms[idx] = 1.0 / a[i];// (a[i] + 1e-24);
 			return;
 		}
@@ -515,6 +526,7 @@ __device__ __forceinline__ float reduce64(volatile float* sharedBuf, int tid)
 	return sharedBuf[0];
 }
 
+extern __shared__ float exSharedBuf[];
 static __global__ void UpdateCameraPosesKernel(float4* dUpdatedKeyPoses,
                                                float4* dUpdatedKeyPosesInv,
                                                float3* dVars,
@@ -525,7 +537,8 @@ static __global__ void UpdateCameraPosesKernel(float4* dUpdatedKeyPoses,
 {
 	int tid = threadIdx.x;
 	int nodeIdx = threadIdx.x + blockIdx.x * blockDim.x;
-	__shared__ float sharedBuf[NODE_NUM_EACH_FRAG];
+	//__shared__ float sharedBuf[NODE_NUM_EACH_FRAG];
+	float* sharedBuf = (float*)exSharedBuf;
 
 	if (nodeIdx >= nodeNum)
 		return;
@@ -636,7 +649,7 @@ void GNSolver::updateCameraPoses()
 
 	block = NODE_NUM_EACH_FRAG;
 	grid = DivUp(nodeNum, NODE_NUM_EACH_FRAG);
-	UpdateCameraPosesKernel << <grid, block >> >(m_inputData->m_dUpdatedKeyPoses,
+	UpdateCameraPosesKernel << <grid, block,NODE_NUM_EACH_FRAG*sizeof(float) >> >(m_inputData->m_dUpdatedKeyPoses,
 	                                             m_inputData->m_dUpdatedKeyPosesInv,
 	                                             (float3*)RAW_PTR(m_dVars),
 	                                             RAW_PTR(m_dCameraToNodeWeightVec),
@@ -672,9 +685,38 @@ void GNSolver::updateCameraPoses()
 #endif
 }
 
+__global__ void ToMatKernel(int* _ia, int* _ja, float* _da, float* _mat, int _N, int _width, int _height)
+{
+	int u = blockDim.x * blockIdx.x + threadIdx.x;
+
+	if (u >= _N) return;
+
+	int num = _ia[u + 1] - _ia[u];
+	int offset = _ia[u];
+	for (int i = 0; i < num; i++)
+	{
+		_mat[u*_width + _ja[offset + i]] = _da[offset + i];
+	}
+}
+
+cv::Mat ToMat(SparseMatrixCsrGpu* _sm)
+{
+	thrust::device_vector<float> d_mat(_sm->m_row*_sm->m_col, 0);
+	int block = 256;
+	int grid = (block + _sm->m_row - 1) / block;
+	ToMatKernel << <grid, block >> > (RAW_PTR(_sm->m_dIa), RAW_PTR(_sm->m_dJa), RAW_PTR(_sm->m_dA), RAW_PTR(d_mat),
+		_sm->m_row, _sm->m_col, _sm->m_row);
+	checkCudaErrors(cudaDeviceSynchronize());
+	checkCudaErrors(cudaGetLastError());
+
+	cv::Mat h_mat(_sm->m_row, _sm->m_col, CV_32FC1);
+	checkCudaErrors(cudaMemcpy(h_mat.data, RAW_PTR(d_mat), _sm->m_row*_sm->m_col * sizeof(float), cudaMemcpyDeviceToHost));
+	return h_mat;
+}
+
 bool GNSolver::next(int iter)
 {
-	//innoreal::InnoRealTimer timer;
+	innoreal::InnoRealTimer timer;
 	//timer.TimeStart();
 	checkCudaErrors(cudaMemset(RAW_PTR(m_dDelta), 0, m_dDelta.size() * sizeof(float)));
 	checkCudaErrors(cudaMemset(RAW_PTR(m_dJTb), 0, m_dJTb.size() * sizeof(float)));
@@ -683,7 +725,7 @@ bool GNSolver::next(int iter)
 	//printf("time of reset JTb,JTJ,delta: %f ms \n", timer.TimeGap_in_ms());
 	// Accumulate JTJ and JTb
 	std::vector<Constraint *>::iterator it;
-	//double totalTime = 0.0;
+	double totalTime = 0.0;
 
 	//timer.TimeStart();
 	for (it = m_cons.begin(); it != m_cons.end(); ++it)
@@ -700,6 +742,29 @@ bool GNSolver::next(int iter)
 	//timer.TimeEnd();
 	//std::cout << "JTJ time: " << timer.TimeGap_in_ms() << std::endl;
 
+
+#if 0
+	//cv::Mat tmp = ToMat(&m_dJTJ);
+	//cv::Mat tmp_eigenvalue, tmp_eigenvector;
+	//cv::eigen(tmp, tmp_eigenvalue, tmp_eigenvector);
+
+	float jtb_sum = thrust::reduce(m_dJTb.begin(), m_dJTb.end());
+	std::cout << "Jtb sum: " << jtb_sum << "\n";
+	std::cout << "Nan JtJ Num: " << CheckNanVertex(RAW_PTR(m_dJTJ.m_dA), m_dJTJ.m_dA.size()) << "\n";
+	std::cout << "Nan Vars Num: " << CheckNanVertex(RAW_PTR(m_dVars), m_varsNum) << "\n";
+	std::cout << "Nan Delta Num: " << CheckNanVertex(RAW_PTR(m_dDelta), m_varsNum) << "\n";
+	thrust::copy(m_dVars.begin(), m_dVars.begin() + 20, std::ostream_iterator<float>(std::cout, " ")); printf("\n");
+	thrust::copy(m_dDelta.begin(), m_dDelta.begin() + 20, std::ostream_iterator<float>(std::cout, " ")); printf("\n");
+
+	float val;
+	for (it = m_cons.begin(); it != m_cons.end(); ++it) {
+		Constraint *pCon = *it;
+		val = pCon->val(reinterpret_cast<float3*>(RAW_PTR(m_dVars)));
+		printf("before opt: GPU,%s:%.10f \n", pCon->ctype(), val);
+		//m_residual += val;
+	}
+#endif
+
 	int block_size = 512;
 	int grid_size = (m_varsNum + block_size - 1) / block_size;
 	ExtractPreconditioner << < grid_size, block_size >> >(RAW_PTR(m_dPreconditioner),
@@ -711,12 +776,17 @@ bool GNSolver::next(int iter)
 	checkCudaErrors(cudaGetLastError());
 
 	int nnzSize = (m_inputData->m_Iij.m_nnzIij * 2 - m_inputData->m_source.m_nodeNum) * 144;
-	std::cout << "nnzSize2: " << nnzSize << std::endl;
+	//std::cout << "nnzSize2: " << nnzSize << std::endl;
 	//timer.TimeStart();
 	m_pcgLinearSolver->solveCPUOpt(m_dDelta, RAW_PTR(m_dJTJ.m_dIa), RAW_PTR(m_dJTJ.m_dJa), RAW_PTR(m_dJTJ.m_dA), nnzSize,
-	                               m_dJTb, m_dPreconditioner, 500);
+	                               m_dJTb, m_dPreconditioner, 100);
+	/*m_pcgLinearSolver->SolveCPUOpt(RAW_PTR(m_dJTJ.m_dIa), RAW_PTR(m_dJTJ.m_dJa), RAW_PTR(m_dJTJ.m_dA), m_dJTJ.m_nnz, m_dJTb,
+		m_dDelta, m_dPreconditioner, 1000);*/
+
 	//timer.TimeEnd();
 	//std::cout << "PCG time: " << timer.TimeGap_in_ms() << std::endl;
+
+	
 #if 0
 	std::cout << "delta: " <<std::endl;
 	std::vector<float> deltaRtsVec(m_inputData->m_source.m_nodeNum * 12);
@@ -731,6 +801,21 @@ bool GNSolver::next(int iter)
 #if 1
 	//timer.TimeStart();
 	AddDeltaVarstoVars(m_dVars, m_dDelta, m_varsNum);
+
+#if 0
+	std::cout << "Nan Vars Num: " << CheckNanVertex(RAW_PTR(m_dVars), m_varsNum) << "\n";
+	std::cout << "Nan Delta Num: " << CheckNanVertex(RAW_PTR(m_dDelta), m_varsNum) << "\n";
+	thrust::copy(m_dVars.begin(), m_dVars.begin() + 20, std::ostream_iterator<float>(std::cout, " ")); printf("\n");
+	thrust::copy(m_dDelta.begin(), m_dDelta.begin() + 20, std::ostream_iterator<float>(std::cout, " ")); printf("\n");
+
+	for (it = m_cons.begin(); it != m_cons.end(); ++it) {
+		Constraint *pCon = *it;
+		val = pCon->val(reinterpret_cast<float3*>(RAW_PTR(m_dVars)));
+		printf("before opt: GPU,%s:%.10f \n", pCon->ctype(), val);
+		//m_residual += val;
+	}
+#endif
+
 	CalcInvTransRot((float *)RAW_PTR(m_dRsTransInv), (float *)RAW_PTR(m_dVars), m_inputData->m_source.m_nodeNum);
 	UpdateVertexPosesAndNormals(RAW_PTR(m_inputData->m_deformed.m_dVertexVec),
 	                                   RAW_PTR(m_inputData->m_deformed.m_dNormalVec),
@@ -744,6 +829,8 @@ bool GNSolver::next(int iter)
 	                                   RAW_PTR(m_inputData->m_source.m_dVertexRelaWeightVec));
 	//timer.TimeEnd();
 	//std::cout << "update vertex time: " << timer.TimeGap_in_ms() << std::endl;
+
+	//std::cout << "Nan Deform Vertex Num: " << CheckNanVertex(RAW_PTR(m_inputData->m_deformed.m_dVertexVec), m_inputData->m_deformed.m_vertexNum) << "\n";
 
 #if 1
 	//timer.TimeStart();

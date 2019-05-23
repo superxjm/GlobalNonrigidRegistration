@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="xDeformation">
+      <UniqueIdentifier>{011d93cd-570c-4f18-ad46-2398ef681678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{2f845c4a-a420-4cf6-bc7a-c3d76c56bb0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Display">
+      <UniqueIdentifier>{d69545ec-5dac-49ef-ab34-41a5ab25837a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cuda">
+      <UniqueIdentifier>{5260b537-00c6-4f13-90c4-a3e05687ad03}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Helpers\xUtils.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\ArcBall.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\DrawObject.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\ImageWidget.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\ImageWindow.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\LinesObject.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\MainWindow.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\OpenGLWindow.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\PointsObject.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Display\TrianglesObject.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyPointsObject.cpp" />
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="SpinWidget.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="WeightWidget.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="ComboBoxWidget.cpp" />
+    <ClCompile Include="LabelEditLineWidget.cpp" />
+    <ClCompile Include="LabelEditLineListWidget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Constraint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="GeoConstraint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="GNSolver.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="InputData.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="KNearestPoint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="PhotoConstraint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="RotConstraint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="SmoothConstraint.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseMatrix.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="xDeformation.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\UtilsMath.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\xUtils.cuh">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\xUtils.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\xGlobalStats.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Display\ArcBall.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Display\DrawObject.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Display\LinesObject.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Display\PointsObject.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="Display\TrianglesObject.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="MyPointsObject.h" />
+    <ClInclude Include="wObject.h" />
+    <ClInclude Include="Register.h" />
+    <ClInclude Include="Cuda\xDeformationCudaFuncs.cuh">
+      <Filter>Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="Cuda\xDeformationCudaFuncs2.cuh">
+      <Filter>Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="Cuda\xLinearSolver.cuh">
+      <Filter>Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantColor.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshPointsIO.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="PcgSolver.h">
+      <Filter>xDeformation</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="ConnectFunctionPointer.h" />
+    <ClInclude Include="FilterPointCould.h" />
+    <ClInclude Include="wUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Helpers\xUtils.cu">
+      <Filter>Helpers</Filter>
+    </CudaCompile>
+    <CudaCompile Include="wObject.cu" />
+    <CudaCompile Include="Register.cu" />
+    <CudaCompile Include="xDeformation.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SparseMatrix.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SmoothConstraint.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="RotConstraint.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="PhotoConstraint.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="MeshData.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="InputData.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="IijSet.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GNSolver.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="GeoConstraint.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Cuda\xDeformationCudaFuncs.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Cuda\xDeformationCudaFuncs2.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Cuda\xLinearSolver.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="PcgSolver.cu">
+      <Filter>xDeformation</Filter>
+    </CudaCompile>
+    <CudaCompile Include="FilterPointCould.cu" />
+    <CudaCompile Include="wUtils.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Display\FragmentColor.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\FragmentPhong.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\FragmentRenderVertexId.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\README.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\VertexColor.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\VertexPhong.txt">
+      <Filter>Display</Filter>
+    </Text>
+    <Text Include="Display\VertexRenderVertexId.txt">
+      <Filter>Display</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Display\ImageWidget.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="Display\ImageWindow.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="Display\MainWindow.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="Display\OpenGLWindow.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="SpinWidget.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="WeightWidget.h">
+      <Filter>Display</Filter>
+    </QtMoc>
+    <QtMoc Include="ComboBoxWidget.h" />
+    <QtMoc Include="LabelEditLineWidget.h" />
+    <QtMoc Include="LabelEditLineListWidget.h" />
+  </ItemGroup>
+</Project>
