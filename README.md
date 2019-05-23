@@ -1,4 +1,4 @@
-# GlobalNonrigidRegistration #
+# Global Non-rigid Registration #
 
 The fast global non-rigid registration algorithm for our 360 degree object reconstruction system
 
@@ -7,7 +7,7 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 * **[Online Global Non-rigid Registration for 3D Object Reconstruction Using Consumer-level Depth Cameras](http://www.cad.zju.edu.cn/home/weiweixu/wwxu2017_2018.files/2018_Online%20Global%20Non-rigid%20Registration%20for%203D%20Object%20Reconstruction.pdf)**, *Jiamin Xu, Weiwei Xu, Yin Yang, Zhigang Deng, Hujun Bao*, PG '18
 
-# 360 Degree Reconstruction #
+# Reconstruction Results #
 ![360-degree_Reconstruction](https://s2.ax1x.com/2019/05/23/VCIZVJ.gif)
 
 # Windows - Visual Studio #
