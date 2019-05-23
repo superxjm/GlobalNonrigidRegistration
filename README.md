@@ -1,6 +1,6 @@
 # GlobalNonrigidRegistration #
 
-The fast global non-rigid registration of our 360 degree object reconstruction system
+The fast global non-rigid registration algorithm for our 360 degree object reconstruction system
 
 # Related Publications #
 Please cite this work if you make use of our system in any of your own endeavors:
@@ -22,4 +22,6 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 Note: The FLANN library should be modified as in KNearestPoint.h
 
+BaiduYun link for all libraries: https://pan.baidu.com/s/1eSCdcseHjDjJfH4Dy3EDaA 
+Passward: ixub
 
