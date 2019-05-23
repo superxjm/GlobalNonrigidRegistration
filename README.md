@@ -9,7 +9,7 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 * **[Online Global Non-rigid Registration for 3D Object Reconstruction Using Consumer-level Depth Cameras]()**, *Jiamin Xu, Weiwei Xu, Yin Yang, Zhigang Deng, Hujun Bao*, PG '18
 
-[![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://youtu.be/M1xT-15-rMA)
+![360-degree_Reconstruction](https://imgchr.com/i/VCIZVJ)
 
 # Windows - Visual Studio #
 * Windows 7/10 with Visual Studio 2015
