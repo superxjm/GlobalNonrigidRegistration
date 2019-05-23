@@ -1,0 +1,14 @@
+#version 400
+
+flat in int v_VertexId;
+uniform int u_ObjectId;
+
+void main()
+{
+   float r = (v_VertexId % 256) / 255.0f;
+   float g = (v_VertexId / 256 % 256) / 255.0f;
+   float b = (v_VertexId / 256 / 256 % 256 ) / 255.0f;
+   float a = u_ObjectId / 255.0f;
+   gl_FragColor = vec4(r,g,b,a);
+   //gl_FragColor.r = v_VertexId;
+}

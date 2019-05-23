@@ -150,6 +150,7 @@ public:
 	~PcgLinearSolver() {
 		cusparseDestroy(m_cusparseHandle);
 		cusparseDestroyMatDescr(m_descr);
+		buf.clear();
 	}
 	void init(int length_a);
 	void solveCPUOpt(thrust::device_vector<float>& d_x,

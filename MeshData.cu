@@ -202,6 +202,8 @@ FragDeformableMeshData::FragDeformableMeshData()
 FragDeformableMeshData::~FragDeformableMeshData()
 {
 	m_vertexStrideVec.clear();
+	m_dSampledVertexIdxVec.clear();
+	m_dMatchingPointsIdxVec.clear();
 	m_dNewSampledVertexIdxVec.clear();
 	m_dNewNodeVec.clear();
 }

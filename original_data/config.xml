@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<ObjectNum>6</ObjectNum>
+<CameraWidth>2048</CameraWidth>
+<CameraHeight>2048</CameraHeight>
+<ObjectFileName>
+  "original_data/000000.ply" "original_data/000001.ply" "original_data/000002.ply" "original_data/000003.ply" "original_data/000004.ply"
+  "original_data/000005.ply"</ObjectFileName>
+  
+<CameraDepthWidth>1024</CameraDepthWidth>
+<CameraDepthHeight>1024</CameraDepthHeight>
+<CameraDepthFilename>"original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth00.raw"
+                     "original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth01.raw"
+					 "original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth02.raw"
+					 "original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth03.raw"
+					 "original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth04.raw"
+					 "original_data/threeviews/threeviews/depthdata/20180611_201855_AS00000_male_projection_depth05.raw"</CameraDepthFilename>
+  
+<CameraPose>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      1. 0. 0. 0. 0. 1. 0. 0. 0. 0. 1. 0. 0. 0. 0. 1.</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      8.99325013e-01 1.57212004e-01 4.08033997e-01 -9.85265017e-01
+      -2.85968006e-01 -4.94482011e-01 8.20804000e-01 -1.53420603e+00
+      3.30808014e-01 -8.54849994e-01 -3.99742007e-01 2.65556908e+00 0.
+      0. 0. 1.</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      8.86350989e-01 -1.71805993e-01 4.29955989e-01 -9.52857018e-01
+      3.03602010e-01 -4.85460013e-01 -8.19859982e-01 1.70122302e+00
+      3.49584997e-01 8.57222021e-01 -3.78127009e-01 2.62974191e+00 0. 0.
+      0. 1.</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      9.99661028e-01 -1.44260004e-02 -2.11970005e-02 9.49451983e-01
+      1.47960000e-02 9.99746978e-01 1.72969997e-02 -4.04899986e-03
+      2.09270008e-02 -1.76020004e-02 9.99629021e-01 1.38980001e-01 0. 0.
+      0. 1.</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      9.50596988e-01 1.46871001e-01 2.73393989e-01 3.33784014e-01
+      -1.63558006e-01 -5.11574984e-01 8.43519986e-01 -1.58594894e+00
+      2.63749987e-01 -8.46583009e-01 -4.62294012e-01 2.92558599e+00 0.
+      0. 0. 1.</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>4</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      9.47829008e-01 -1.68505996e-01 2.70534992e-01 4.20033991e-01
+      1.64758995e-01 -4.67572987e-01 -8.68466020e-01 1.70293403e+00
+      2.72837013e-01 8.67745996e-01 -4.15423006e-01 2.89712000e+00 0. 0.
+      0. 1.</data></_></CameraPose>
+<CameraFxFyCxCy>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      4545.347266 4535.303278 1030.593491 952.475093</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+       4539.472277 4547.023379 1022.530506 970.398554</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      4537.014648 4540.808495 1030.590852 956.059705</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      2350.121696 2352.215410 1013.144390 1027.700872</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      2353.917880 2358.807633 1017.853541 1018.495602</data></_>
+  <_ type_id="opencv-matrix">
+    <rows>1</rows>
+    <cols>4</cols>
+    <dt>f</dt>
+    <data>
+      2354.315704 2354.839794 1022.680332 1018.796769</data></_></CameraFxFyCxCy>
+</opencv_storage>
