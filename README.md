@@ -2,7 +2,7 @@ GlobalNonrigidRegistration
 
 # GlobalNonrigidRegistration #
 
-Fast Global Non-rigid Registration
+The fast global non-rigid registration of our 360 degree object reconstruction system
 
 # Related Publications #
 Please cite this work if you make use of our system in any of your own endeavors:
