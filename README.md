@@ -9,6 +9,7 @@ Please cite this work if you make use of our system in any of your own endeavors
 
 * **[Online Global Non-rigid Registration for 3D Object Reconstruction Using Consumer-level Depth Cameras]()**, *Jiamin Xu, Weiwei Xu, Yin Yang, Zhigang Deng, Hujun Bao*, PG '18
 
+# 360 Degree Reconstruction #
 ![360-degree_Reconstruction](https://s2.ax1x.com/2019/05/23/VCIZVJ.gif)
 
 # Windows - Visual Studio #
